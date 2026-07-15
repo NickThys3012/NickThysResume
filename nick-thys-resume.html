@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="maker">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nick Thys — Software Developer & Maker</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=IBM+Plex+Mono:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+/* ============ THEME TOKENS ============ */
+:root[data-theme="maker"]{
+  --bg:#2E2116; --bg2:#33251A; --panel:#38291C; --ink:#F0E6D6; --ink-soft:#C9B89A;
+  --accent:#C97832; --accent-soft:#8A5A2C; --line:#4A3A28; --shadow:#1A1410;
+  --font-display:'Big Shoulders Display',sans-serif; --font-body:'IBM Plex Mono',monospace;
+  --radius:0px; --tracking-h:.01em; --texture: repeating-linear-gradient(90deg, rgba(0,0,0,.05) 0px, transparent 1px, transparent 3px);
+}
+:root[data-theme="terminal"]{
+  --bg:#0A0A0A; --bg2:#111111; --panel:#141414; --ink:#D8D8D8; --ink-soft:#8A8A8A;
+  --accent:#FFB000; --accent-soft:#8A6000; --line:#2a2a2a; --shadow:transparent;
+  --font-display:'JetBrains Mono',monospace; --font-body:'JetBrains Mono',monospace;
+  --radius:4px; --tracking-h:0em; --texture: none;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background:var(--bg); color:var(--ink); font-family:var(--font-body);
+  background-image:var(--texture);
+  transition:background .3s, color .3s;
+}
+a { color:var(--accent); }
+.wrap { max-width:920px; margin:0 auto; padding:0 32px; }
+
+/* ---- top bar / toggle ---- */
+.topbar {
+  position:sticky; top:0; z-index:50; background:var(--bg); border-bottom:1px solid var(--line);
+  backdrop-filter: blur(4px);
+}
+.topbar .wrap { display:flex; align-items:center; justify-content:space-between; padding:16px 32px; }
+.brand { font-family:var(--font-display); font-weight:900; font-size:15px; letter-spacing:.05em; text-transform:uppercase; }
+.toggle-group { display:flex; align-items:center; gap:10px; font-size:12px; color:var(--ink-soft); }
+.toggle {
+  width:52px; height:26px; border-radius:13px; background:var(--panel); border:1px solid var(--line);
+  position:relative; cursor:pointer; flex-shrink:0;
+}
+.toggle .dot {
+  position:absolute; top:2px; left:2px; width:20px; height:20px; border-radius:50%;
+  background:var(--accent); transition:transform .25s ease;
+}
+[data-theme="terminal"] .toggle .dot { transform:translateX(26px); }
+.mode-label { font-weight:600; cursor:pointer; }
+.mode-label.on { color:var(--ink); }
+.mode-label.off { color:var(--ink-soft); }
+
+/* ---- hero ---- */
+.hero { padding:90px 0 60px; }
+.eyebrow { color:var(--accent); font-size:12px; letter-spacing:.2em; text-transform:uppercase; margin-bottom:18px; }
+[data-theme="maker"] .eyebrow::before { content:"◈ "; }
+[data-theme="terminal"] .eyebrow::before { content:"// "; color:var(--ink-soft); }
+h1.name {
+  font-family:var(--font-display); font-weight:900; font-size:clamp(42px,8vw,88px); line-height:.95;
+  text-transform:uppercase; letter-spacing:var(--tracking-h); color:var(--ink);
+  text-shadow: 2px 2px 0 var(--shadow);
+}
+[data-theme="terminal"] h1.name { text-transform:none; font-weight:700; text-shadow:none; }
+h1.name .accent { color:var(--accent); }
+.headline { font-size:16px; color:var(--ink-soft); margin-top:20px; max-width:600px; line-height:1.8; border-left:2px solid var(--accent); padding-left:18px; }
+[data-theme="terminal"] .headline { border-left:none; padding-left:0; }
+[data-theme="terminal"] .headline::before { content:"$ cat about.txt\A"; white-space:pre; color:var(--accent); display:block; margin-bottom:8px; font-size:13px; }
+
+.stats { display:flex; flex-wrap:wrap; gap:0; margin-top:44px; border-top:1px solid var(--line); }
+.stat { flex:1; min-width:140px; padding:20px 20px 0; border-right:1px solid var(--line); }
+.stat:last-child{ border-right:none; }
+.stat .n { font-family:var(--font-display); font-size:30px; font-weight:900; color:var(--accent); }
+[data-theme="terminal"] .stat .n { font-weight:700; }
+.stat .l { font-size:11px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.08em; margin-top:4px; }
+
+/* ---- section shell ---- */
+section { padding:56px 0; border-top:1px solid var(--line); }
+.section-head { display:flex; align-items:baseline; gap:14px; margin-bottom:36px; }
+.section-num { font-family:var(--font-display); color:var(--accent); font-size:14px; font-weight:700; }
+[data-theme="maker"] .section-num::after{ content:" —"; }
+[data-theme="terminal"] .section-num::before{ content:"["; } 
+[data-theme="terminal"] .section-num::after{ content:"]"; }
+h2 {
+  font-family:var(--font-display); font-weight:900; font-size:26px; text-transform:uppercase; letter-spacing:var(--tracking-h); color:var(--ink);
+}
+[data-theme="terminal"] h2 { text-transform:none; font-weight:700; font-size:20px; }
+
+/* ---- experience ---- */
+.job { margin-bottom:38px; }
+.job-head { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; margin-bottom:6px; }
+.job-title { font-family:var(--font-display); font-size:20px; font-weight:700; color:var(--ink); }
+[data-theme="terminal"] .job-title { font-family:var(--font-body); font-weight:700; font-size:15px; }
+.job-title .co { color:var(--accent); }
+.job-dates { font-size:12px; color:var(--ink-soft); font-family:var(--font-body); white-space:nowrap; }
+.role-list { margin-top:14px; border-left:1px solid var(--line); padding-left:20px; display:flex; flex-direction:column; gap:16px; }
+.role { position:relative; }
+.role::before{
+  content:""; position:absolute; left:-25px; top:6px; width:8px; height:8px;
+  background:var(--accent); border-radius:50%;
+}
+[data-theme="terminal"] .role::before{ border-radius:0; width:6px; height:6px; }
+.role h3 { font-size:14px; font-weight:600; color:var(--ink); margin-bottom:3px; }
+.role .r-dates { font-size:11px; color:var(--ink-soft); margin-bottom:6px; display:block; }
+.role p { font-size:13px; color:var(--ink-soft); line-height:1.7; max-width:620px; }
+
+/* ---- grid cards (skills / projects) ---- */
+.skill-groups { display:grid; grid-template-columns:repeat(2,1fr); gap:2px; background:var(--line); }
+[data-theme="terminal"] .skill-groups{ background:transparent; gap:16px; }
+.skill-card { background:var(--bg); padding:24px; }
+[data-theme="terminal"] .skill-card{ background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); }
+.skill-card .tag { color:var(--accent); font-size:11px; letter-spacing:.1em; text-transform:uppercase; margin-bottom:12px; display:block; }
+.pills { display:flex; flex-wrap:wrap; gap:8px; }
+.pills span {
+  border:1px solid var(--accent-soft); color:var(--ink-soft); padding:5px 11px; font-size:12px; border-radius:var(--radius);
+}
+[data-theme="terminal"] .pills span { border-color:var(--line); background:var(--bg); }
+
+/* ---- project feature ---- */
+.project-card {
+  border:1px solid var(--line); padding:30px; border-radius:var(--radius); background:var(--panel);
+}
+.project-card .tag { color:var(--accent); font-size:11px; letter-spacing:.1em; text-transform:uppercase; }
+.project-card h3 { font-family:var(--font-display); font-size:22px; margin:10px 0 12px; text-transform:uppercase; }
+[data-theme="terminal"] .project-card h3 { font-family:var(--font-body); font-weight:700; font-size:16px; text-transform:none; }
+.project-card p { font-size:13.5px; color:var(--ink-soft); line-height:1.8; max-width:640px; }
+
+/* ---- education / certs / lang ---- */
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:50px; }
+.list-item { margin-bottom:18px; }
+.list-item .li-title { font-weight:600; font-size:14.5px; color:var(--ink); }
+.list-item .li-sub { font-size:12.5px; color:var(--ink-soft); margin-top:2px; }
+.lang-row { display:flex; justify-content:space-between; font-size:13.5px; padding:10px 0; border-bottom:1px solid var(--line); }
+.lang-row .prof { color:var(--accent); font-size:12px; }
+
+footer { padding:50px 0 70px; text-align:left; }
+footer p { color:var(--ink-soft); font-size:13px; }
+footer .fname { font-family:var(--font-display); font-size:15px; color:var(--ink); text-transform:uppercase; }
+[data-theme="terminal"] footer .fname{ font-family:var(--font-body); text-transform:none; font-weight:700; }
+
+@media (max-width:680px){
+  .skill-groups, .two-col { grid-template-columns:1fr; }
+  .stats { flex-wrap:wrap; }
+  .stat { min-width:45%; border-right:none; border-bottom:1px solid var(--line); padding-bottom:16px; margin-bottom:16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand">Nick Thys</div>
+    <div class="toggle-group">
+      <span class="mode-label off" id="lbl-maker">Maker</span>
+      <div class="toggle" id="themeToggle" role="button" aria-label="Toggle theme"><div class="dot"></div></div>
+      <span class="mode-label off" id="lbl-terminal">Dev</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section class="hero" style="border-top:none;">
+    <div class="eyebrow">Sint-Niklaas, Belgium</div>
+    <h1 class="name">Nick <span class="accent">Thys</span></h1>
+    <p class="headline">Software Developer at Involved and founder of ThysCraft. Nearly four years building enterprise .NET/Azure platforms for the Flemish government and the maritime sector — and laser-engraving things by hand when the terminal's closed.</p>
+
+    <div class="stats">
+      <div class="stat"><div class="n">4</div><div class="l">Years at Involved</div></div>
+      <div class="stat"><div class="n">3</div><div class="l">Major client sectors</div></div>
+      <div class="stat"><div class="n">2025</div><div class="l">ThysCraft founded</div></div>
+      <div class="stat"><div class="n">3</div><div class="l">Languages spoken</div></div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="section-head"><span class="section-num">01</span><h2>Experience</h2></div>
+
+    <div class="job">
+      <div class="job-head">
+        <div class="job-title"><span class="co">Involved</span> — Software Developer</div>
+        <div class="job-dates">Feb 2022 — Present</div>
+      </div>
+      <div class="role-list">
+        <div class="role">
+          <h3>Technical Support Engineer — Wonen in Vlaanderen: CIR</h3>
+          <span class="r-dates">Feb 2025 — Present</span>
+          <p>Supporting the Central Registration Register, the Flemish government's platform for social housing applications. Analysing incidents, running SQL diagnostics, and shipping permanent fixes on a live Agile project.</p>
+        </div>
+        <div class="role">
+          <h3>Internship Mentor</h3>
+          <span class="r-dates">Feb 2025 — Jun 2025</span>
+          <p>Guided an AP Hogeschool Antwerpen student through a full dev cycle — architecture, implementation, delivery — on an event-planning tool now used internally at Involved.</p>
+        </div>
+        <div class="role">
+          <h3>Full Stack Developer — BOSA: SELOR business</h3>
+          <span class="r-dates">Nov 2024 — Jan 2025</span>
+          <p>Migrated legacy WCF services to REST for the Federal Public Service Policy and Support, replacing a custom mediator implementation with MediatR.</p>
+        </div>
+        <div class="role">
+          <h3>Full Stack Developer — Hack The Future</h3>
+          <span class="r-dates">Aug 2024 — Nov 2024</span>
+          <p>Built 7 puzzle challenges plus a live progress-tracking frontend for Cronos's annual student coding event.</p>
+        </div>
+        <div class="role">
+          <h3>Back End Developer — ZeroNorth &amp; Euronav: FAST</h3>
+          <span class="r-dates">Jan 2023 — Aug 2024</span>
+          <p>Built environmental reporting, port-call optimization, and carbon-emissions reporting for Euronav's fleet-performance platform; developed integrations between FAST and ZeroNorth systems.</p>
+        </div>
+        <div class="role">
+          <h3>Full Stack Developer — Digidak</h3>
+          <span class="r-dates">Sep 2022 — Jan 2023</span>
+          <p>Delivered a platform for running digital-skills events — helping people get started with email, Facebook, and other everyday tech.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="job">
+      <div class="job-head">
+        <div class="job-title"><span class="co">ThysCraft</span> — Founder</div>
+        <div class="job-dates">Apr 2025 — Present</div>
+      </div>
+      <div class="role-list">
+        <div class="role">
+          <h3>Laser engraving &amp; 3D printing studio</h3>
+          <p>Custom commissions, event medals, and small-batch pieces — the hands-on counterpart to a screen-based day job.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="project">
+    <div class="section-head"><span class="section-num">02</span><h2>Featured Project</h2></div>
+    <div class="project-card">
+      <div class="tag">Personal · Feb 2026</div>
+      <h3>Flight Prep</h3>
+      <p>A web app that digitizes hot-air-balloon flight preparation, replacing a static Word document. Handles load/weight calculations, live weather data, PDF export, and KML import to visualize power lines and controlled airspace on an interactive map. Built as an exercise in AI-assisted development with GitHub Copilot.</p>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="section-head"><span class="section-num">03</span><h2>Skills</h2></div>
+    <div class="skill-groups">
+      <div class="skill-card">
+        <span class="tag">Backend &amp; .NET</span>
+        <div class="pills"><span>C#</span><span>.NET Core</span><span>.NET Framework</span><span>ASP.NET MVC</span><span>Entity Framework</span><span>MediatR</span><span>Autofac</span><span>WCF</span></div>
+      </div>
+      <div class="skill-card">
+        <span class="tag">Cloud &amp; Data</span>
+        <div class="pills"><span>Microsoft Azure</span><span>AWS</span><span>SQL Server</span><span>RabbitMQ</span><span>SignalR</span><span>Power Automate</span></div>
+      </div>
+      <div class="skill-card">
+        <span class="tag">Frontend</span>
+        <div class="pills"><span>Angular</span><span>Blazor</span><span>JavaScript</span><span>TypeScript</span><span>HTML</span><span>Bootstrap</span><span>Leaflet</span></div>
+      </div>
+      <div class="skill-card">
+        <span class="tag">Process &amp; Craft</span>
+        <div class="pills"><span>Scrum</span><span>Mentoring</span><span>Technical Analysis</span><span>Laser Engraving</span><span>3D Printing</span><span>Business Ownership</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="background">
+    <div class="section-head"><span class="section-num">04</span><h2>Education &amp; Languages</h2></div>
+    <div class="two-col">
+      <div>
+        <div class="list-item">
+          <div class="li-title">AP Hogeschool Antwerpen</div>
+          <div class="li-sub">Bachelor's degree · 2019 — Sep 2022</div>
+        </div>
+        <div class="list-item">
+          <div class="li-title">HOGENT</div>
+          <div class="li-sub">Bachelor's degree · 2017 — 2019</div>
+        </div>
+        <div class="list-item">
+          <div class="li-title">Microsoft Certified: Azure AI Fundamentals</div>
+          <div class="li-sub">Microsoft · Mar 2026</div>
+        </div>
+        <div class="list-item">
+          <div class="li-title">Basisveiligheid VCA</div>
+          <div class="li-sub">Constructiv · Feb 2017 — Feb 2027</div>
+        </div>
+      </div>
+      <div>
+        <div class="lang-row"><span>Dutch</span><span class="prof">Native</span></div>
+        <div class="lang-row"><span>English</span><span class="prof">Full professional</span></div>
+        <div class="lang-row"><span>German</span><span class="prof">Elementary</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="fname">Nick Thys</div>
+    <p style="margin-top:6px;">Software Developer · Involved — Founder · ThysCraft — Sint-Niklaas, Belgium</p>
+  </footer>
+
+</div>
+
+<script>
+const toggle = document.getElementById('themeToggle');
+const html = document.documentElement;
+const lblMaker = document.getElementById('lbl-maker');
+const lblTerminal = document.getElementById('lbl-terminal');
+
+function setTheme(t){
+  html.setAttribute('data-theme', t);
+  lblMaker.classList.toggle('on', t==='maker');
+  lblMaker.classList.toggle('off', t!=='maker');
+  lblTerminal.classList.toggle('on', t==='terminal');
+  lblTerminal.classList.toggle('off', t!=='terminal');
+}
+toggle.addEventListener('click', ()=>{
+  setTheme(html.getAttribute('data-theme')==='maker' ? 'terminal' : 'maker');
+});
+lblMaker.addEventListener('click', ()=>setTheme('maker'));
+lblTerminal.addEventListener('click', ()=>setTheme('terminal'));
+setTheme('maker');
+</script>
+
+</body>
+</html>
